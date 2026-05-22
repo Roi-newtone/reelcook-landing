@@ -1,0 +1,25 @@
+# OS / OneDrive
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Logs / temp
+*.log
+*.tmp
+
+# Local server / cache
+.cache/
+
+# Vercel local config (Vercel manages this in the cloud)
+.vercel/
+
+# Node (in case anyone runs npm here later)
+node_modules/
+
+# Python (extract-frames.py byproducts)
+__pycache__/
+*.pyc
