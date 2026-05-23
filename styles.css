@@ -1787,7 +1787,7 @@ img.logo-mark {
     min-height: 0;
   }
   .ft-card-content {
-    padding: 22px 22px 22px 64px;     /* extra left padding for the play affordance in RTL */
+    padding: 22px 22px 78px 22px;     /* bottom padding reserves room for the "Watch" pill */
   }
   .ft-card h4 { font-size: 18px; }
   .ft-card p {
@@ -1795,24 +1795,46 @@ img.logo-mark {
     line-height: 1.6;
     margin-bottom: 0;
   }
-  /* Inline play button as a card-level affordance (RTL: shows on the visual left of the card) */
+  /* Full-width "Watch the video" pill at the bottom of the card —
+     explicit affordance + subtle pulsing halo so the user instantly
+     reads it as an interactive video. */
   .ft-card::after {
-    content: "";
+    content: "צפו בסרטון";
     position: absolute;
-    inset-inline-end: 22px;           /* visual-left in RTL */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    bottom: 18px;
+    inset-inline-start: 22px;
+    inset-inline-end: 22px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
     background-color: var(--brand);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'><path d='M8 5v14l11-7z'/></svg>");
     background-repeat: no-repeat;
-    background-position: 54% 50%;
-    background-size: 16px 16px;
-    box-shadow: 0 8px 18px rgba(255,107,0,0.30);
+    background-size: 12px 12px;
+    background-position: calc(50% + 50px) 50%;
+    padding-inline-end: 24px;          /* visual-left in RTL — pulls text away from icon */
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: -0.005em;
+    box-shadow:
+      0 8px 18px rgba(255,107,0,0.32),
+      0 0 0 0 rgba(255,107,0,0.45);
+    animation: ft-watch-pulse 2.6s ease-out infinite;
   }
-  .ft-card:hover::after { transform: translateY(-50%) scale(1.05); }
+  .ft-card:active::after {
+    box-shadow: 0 4px 10px rgba(255,107,0,0.30), 0 0 0 0 rgba(255,107,0,0);
+    transform: translateY(1px);
+  }
+  @keyframes ft-watch-pulse {
+    0%   { box-shadow: 0 8px 18px rgba(255,107,0,0.32), 0 0 0 0 rgba(255,107,0,0.45); }
+    70%  { box-shadow: 0 8px 18px rgba(255,107,0,0.32), 0 0 0 14px rgba(255,107,0,0); }
+    100% { box-shadow: 0 8px 18px rgba(255,107,0,0.32), 0 0 0 14px rgba(255,107,0,0); }
+  }
   .feature-chapter { padding: 50px 0 60px; }
   .features-intro { padding: 70px 0 20px; }
   .community { padding: 90px 0; }
