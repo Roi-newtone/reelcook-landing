@@ -73,6 +73,25 @@ document.querySelectorAll('.faq-item').forEach((item) => {
   });
 });
 
+// ============ Inject mobile "Watch video" pill into each feature card ============
+// Doing this in JS keeps the HTML 10 cards lighter, and lets the pill use a real
+// flex layout (vs. a hacky background-image inside a pseudo-element).
+// pointer-events:none on the pill means clicks pass through to the parent .ft-card
+// which already has the lightbox handler — no extra event wiring needed.
+(function injectPlayPills() {
+  document.querySelectorAll('.ft-card').forEach((card) => {
+    if (card.querySelector('.ft-play-pill')) return;
+    const pill = document.createElement('span');
+    pill.className = 'ft-play-pill';
+    pill.setAttribute('aria-hidden', 'true');
+    pill.innerHTML =
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">' +
+      '<path d="M8 5v14l11-7z"/></svg>' +
+      'צפו בסרטון';
+    card.appendChild(pill);
+  });
+})();
+
 // ============ Lightbox: open on card click, close on backdrop/X/Esc/swipe-down ============
 const lightbox = document.getElementById('lightbox');
 const lightboxVideo = lightbox ? lightbox.querySelector('.lightbox-video') : null;
