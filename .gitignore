@@ -23,3 +23,6 @@ node_modules/
 # Python (extract-frames.py byproducts)
 __pycache__/
 *.pyc
+
+# Original (uncompressed) video backups — kept locally only
+assets/videos-original/

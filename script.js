@@ -87,6 +87,15 @@ function openLightbox(src) {
   lightboxVideo.load();
   lightbox.setAttribute('aria-hidden', 'false');
   lightbox.classList.add('is-open');
+  lightbox.classList.add('is-loading');
+  // Remove the loading state as soon as enough is buffered to play
+  const stopLoading = () => {
+    lightbox.classList.remove('is-loading');
+    lightboxVideo.removeEventListener('playing', stopLoading);
+    lightboxVideo.removeEventListener('canplay', stopLoading);
+  };
+  lightboxVideo.addEventListener('playing', stopLoading);
+  lightboxVideo.addEventListener('canplay', stopLoading);
   lightboxVideo.play().catch(() => {});
   document.body.style.overflow = 'hidden';
 }
@@ -144,6 +153,54 @@ if (lightbox) {
     { passive: true }
   );
 }
+
+// ============ Prefetch feature videos before the user clicks ============
+// We prefetch each card's MP4 when the card scrolls near the viewport, so by the
+// time the user taps "play" the file is already cached and the lightbox is instant.
+const prefetched = new Set();
+function prefetchVideo(src) {
+  if (!src || prefetched.has(src)) return;
+  prefetched.add(src);
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.as = 'video';
+  link.href = src;
+  link.type = 'video/mp4';
+  document.head.appendChild(link);
+}
+
+if ('IntersectionObserver' in window) {
+  const prefetchObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const card = entry.target;
+        const src = card.dataset.video;
+        if (!src) return;
+        // Idle priority so we don't compete with critical rendering
+        const fire = () => prefetchVideo(src);
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(fire, { timeout: 2000 });
+        } else {
+          setTimeout(fire, 800);
+        }
+        prefetchObserver.unobserve(card);
+      });
+    },
+    { rootMargin: '600px 0px', threshold: 0.01 }
+  );
+  document
+    .querySelectorAll('.ft-card[data-video]')
+    .forEach((c) => prefetchObserver.observe(c));
+}
+
+// Belt-and-suspenders: also prefetch the moment the user shows intent.
+document.querySelectorAll('.ft-card[data-video]').forEach((card) => {
+  const onIntent = () => prefetchVideo(card.dataset.video);
+  card.addEventListener('mouseenter', onIntent, { once: true });
+  card.addEventListener('touchstart', onIntent, { passive: true, once: true });
+  card.addEventListener('focus', onIntent, { once: true });
+});
 
 // ============ Scroll-in reveal ============
 const revealObserver = new IntersectionObserver(

@@ -1610,6 +1610,27 @@ img.logo-mark {
   display: flex;
   opacity: 1;
 }
+
+/* Spinner shown over the poster while the video buffers */
+.lightbox-stage::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 46px; height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.30);
+  border-top-color: #fff;
+  animation: lb-spin 0.9s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 2;
+}
+.lightbox.is-loading .lightbox-stage::after { opacity: 1; }
+@keyframes lb-spin {
+  to { transform: rotate(360deg); }
+}
 .lightbox-backdrop {
   position: absolute;
   inset: 0;
