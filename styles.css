@@ -109,6 +109,8 @@ p { margin: 0; color: var(--ink-2); }
   border-radius: var(--r-pill);
   margin-bottom: 18px;
 }
+
+.nowrap { white-space: nowrap; }
 .kicker-light {
   background: rgba(255, 107, 0, 0.18);
   color: #FFB47A;
@@ -1650,6 +1652,8 @@ img.logo-mark {
   animation: lightbox-in 380ms var(--ease-spring);
 }
 .lightbox-video {
+  object-fit: cover;
+  background-color: #000;
   height: min(86vh, 760px);
   width: auto;
   max-width: 92vw;
@@ -1707,16 +1711,43 @@ img.logo-mark {
 @media (max-width: 720px) {
   .nav-links, .nav-cta { display: none; }
   .mobile-toggle { display: inline-flex; }
-  .hero { padding: 56px 0 70px; }
-  .hero-content h1 { font-size: 42px; }
-  .hero-visual { height: 520px; }
-  .phone-front { width: 240px; height: 480px; left: 20px; }
-  .phone-back { width: 200px; height: 400px; right: 0; top: 50px; }
-  .float-card { min-width: 170px; padding: 10px 12px; }
-  .float-card-1 { top: 10px; right: -10px; }
-  .float-card-2 { top: 230px; left: -10px; }
-  .float-card-3 { bottom: 90px; right: 0; }
-  .float-card-4 { bottom: -10px; left: 10px; }
+  .hero { padding: 50px 0 60px; }
+  .hero-content h1 { font-size: 38px; }
+  .hero-visual {
+    height: 440px;
+    width: 100%;
+    max-width: 380px;
+    margin: 24px auto 0;
+    position: relative;
+  }
+  /* Smaller, tighter, centered phones that always fit the viewport */
+  .phone-front {
+    width: 195px; height: 405px;
+    left: 6%; top: 8px;
+    transform: rotate(5deg);
+    border-radius: 36px;
+  }
+  .phone-front .phone-screen { border-radius: 28px; }
+  .phone-back {
+    width: 170px; height: 360px;
+    right: 4%; top: 56px;
+    transform: rotate(-8deg);
+    border-radius: 34px;
+  }
+  .phone-back .phone-screen { border-radius: 26px; }
+  /* Floating cards: shrink + hug the visual so they don't overflow */
+  .float-card {
+    min-width: 0;
+    max-width: 168px;
+    padding: 8px 11px;
+    transform: scale(0.92);
+    transform-origin: center;
+  }
+  .float-card-1 { top: -8px; right: 0; }
+  .float-card-2 { top: 195px; left: 0; }
+  .float-card-4 { bottom: -8px; left: 18px; }
+  .fc-title { font-size: 12.5px; }
+  .fc-sub { font-size: 10.5px; }
   .how-it-works, .features-zigzag, .translate, .faq, .bottom-cta { padding: 70px 0; }
   .sp-strip { gap: 28px; }
   .sp-logo { font-size: 15px; }
@@ -1725,11 +1756,42 @@ img.logo-mark {
   .footer-bottom { flex-direction: column; gap: 14px; }
   .store-badge { padding: 8px 16px; min-height: 52px; }
   .store-bot { font-size: 17px; }
-  /* Mobile feature cards: single column */
+  /* Mobile feature cards: single column, NO phone mockup (saves space, avoids overlap) */
   .ft-cards-3, .ft-cards-4 { grid-template-columns: 1fr; }
   .ft-cards-3 .ft-card:nth-child(3) { max-width: 100%; }
-  .ft-card-media { height: 210px; }
-  .ft-card-phone { width: 170px; height: 340px; }
+  .ft-card-media { display: none; }   /* phone mockup hidden on mobile only */
+  .ft-card {
+    position: relative;
+    padding: 0;
+    min-height: 0;
+  }
+  .ft-card-content {
+    padding: 22px 22px 22px 64px;     /* extra left padding for the play affordance in RTL */
+  }
+  .ft-card h4 { font-size: 18px; }
+  .ft-card p {
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  /* Inline play button as a card-level affordance (RTL: shows on the visual left of the card) */
+  .ft-card::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 22px;           /* visual-left in RTL */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--brand);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'><path d='M8 5v14l11-7z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 54% 50%;
+    background-size: 16px 16px;
+    box-shadow: 0 8px 18px rgba(255,107,0,0.30);
+  }
+  .ft-card:hover::after { transform: translateY(-50%) scale(1.05); }
   .feature-chapter { padding: 50px 0 60px; }
   .features-intro { padding: 70px 0 20px; }
   .community { padding: 90px 0; }
