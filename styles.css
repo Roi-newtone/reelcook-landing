@@ -1739,22 +1739,31 @@ img.logo-mark {
      reappear at desktop breakpoint. */
   .site-header { display: none !important; }
 
-  .hero { padding: 20px 0 50px; }
+  .hero { padding: 14px 0 50px; }
   .hero-content h1 { font-size: 36px; line-height: 1.08; }
-  .hero-content .lede { font-size: 17px; margin-bottom: 22px; }
-  .store-badges { margin-bottom: 18px; }
+  .hero-content .lede { font-size: 17px; margin-bottom: 16px; }
+  .store-badges { margin-bottom: 14px; }
 
-  /* Tighter trust list on mobile — packs the 3 items so the phone rises up */
-  .hero-trust { gap: 8px 18px; }
-  .hero-trust li { font-size: 13px; gap: 6px; }
+  /* Trust list — stacked vertically, hugging the right (Hebrew start in RTL).
+     Compact rows keep total height in check. */
+  .hero-trust {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .hero-trust li { font-size: 14px; gap: 8px; }
 
-  /* Hero visual: only ONE phone now (the looping IG video). Centered, slight
-     tilt, max prominence. */
+  /* Hero visual: flex container — the phone is the SOLE flex item,
+     centered naturally with no absolute-positioning math (which was
+     leaving the phone hugging the left edge in some browsers). */
   .hero-visual {
-    height: 540px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
+    height: auto;
     max-width: 340px;
-    margin: 12px auto 0;     /* lifted closer to the trust tags */
+    margin: 8px auto 0;
     position: relative;
   }
 
@@ -1762,25 +1771,27 @@ img.logo-mark {
      fully covered by the video phone anyway, just wasting render. */
   .phone-front { display: none !important; }
 
-  /* The video phone is the SOLE hero mockup on mobile. Centered horizontally
-     (left:50% + translateX(-50%)) with a subtle rotation for visual life. */
+  /* The video phone is the SOLE hero mockup on mobile.
+     position: relative (not absolute) so it participates in the flex flow
+     of .hero-visual and gets centered cleanly. */
   .phone-back {
+    position: relative;
     width: 260px;
     height: 555px;
-    top: 0;
-    left: 50%;
+    top: auto;
+    left: auto;
     right: auto;
     inset-inline-start: auto;
     inset-inline-end: auto;
-    transform: translateX(-50%) rotate(-3deg);
+    transform: rotate(-3deg);
     z-index: 2;
     opacity: 1;
     border-radius: 40px;
   }
   .phone-back .phone-screen { border-radius: 32px; }
 
-  /* Kill the desktop float-y animation on mobile — it sets its own transform
-     (rotate(-10deg) translateY) which would override our centered placement. */
+  /* Kill the desktop float-y animation on mobile — it would re-set the
+     transform and override our rotation. */
   .phone-back, .phone-front { animation: none !important; }
 
   /* Hide the orbiting floating cards on mobile — they crowd the small viewport.
