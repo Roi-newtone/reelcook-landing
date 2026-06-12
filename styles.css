@@ -1746,25 +1746,25 @@ img.logo-mark {
   .hero { padding: 24px 0 44px; }
 
   /* Convert hero-grid into a single centered column with explicit area order.
-     display: contents on hero-content flattens its children into hero-grid
-     so they can be placed in named grid areas alongside hero-visual. */
+     ORDER: title → lede → trust → badge → phone.
+     The badge sits above the fold; the phone gracefully overflows below. */
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "title"
       "lede"
-      "phone"
       "trust"
-      "badge";
-    gap: 22px;
+      "badge"
+      "phone";
+    gap: 18px;
     justify-items: center;
     text-align: center;
   }
   .hero-content { display: contents; }
   .hero-content h1 {
     grid-area: title;
-    font-size: clamp(28px, 8.5vw, 36px);
+    font-size: clamp(26px, 7.8vw, 32px);
     line-height: 1.1;
     text-align: center;
     margin: 0;
@@ -1772,19 +1772,51 @@ img.logo-mark {
   }
   .hero-content .lede {
     grid-area: lede;
-    font-size: 16px;
-    line-height: 1.55;
+    font-size: 15.5px;
+    line-height: 1.5;
     text-align: center;
     margin: 0;
     max-width: 92%;
   }
 
-  /* Phone mockup — centered, fits screen width comfortably. */
+  /* Trust list — centered, compact 2-row natural wrap.
+     Sits between Lede and Badge so the App Store CTA reaches above the fold. */
+  .hero-trust {
+    grid-area: trust;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .hero-trust li {
+    font-size: 12.5px;
+    gap: 5px;
+  }
+
+  /* App Store badge — centered, prominent, above the fold */
+  .store-badges {
+    grid-area: badge;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+  .store-badge {
+    transform: scale(1.06);
+    transform-origin: center;
+  }
+
+  /* Phone mockup — LAST, smaller, gently overflows below the fold.
+     max-width: 80% per spec; absolute cap 215px so it never feels heavy. */
   .hero-visual {
     grid-area: phone;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -1798,50 +1830,21 @@ img.logo-mark {
     top: auto; left: auto; right: auto;
     inset-inline-start: auto;
     inset-inline-end: auto;
-    width: min(230px, 64vw);
+    width: clamp(170px, 56vw, 215px);
+    max-width: 80%;
     aspect-ratio: 9 / 19;
     height: auto;
     transform: rotate(-2deg);
     margin: 0;
     z-index: 2;
     opacity: 1;
-    border-radius: 34px;
+    border-radius: 32px;
     pointer-events: auto;
   }
-  .phone-back .phone-screen { border-radius: 26px; }
+  .phone-back .phone-screen { border-radius: 25px; }
   .phone-back .phone-screen-image .phone-video,
-  .phone-back .phone-screen-image .phone-img { border-radius: 26px !important; }
+  .phone-back .phone-screen-image .phone-img { border-radius: 25px !important; }
   .phone-back, .phone-front { animation: none !important; }
-
-  /* Trust list — centered row with natural wrap below the phone. */
-  .hero-trust {
-    grid-area: trust;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 8px 18px;
-    max-width: 96%;
-    margin: 0;
-    padding: 0;
-  }
-  .hero-trust li {
-    font-size: 13.5px;
-    gap: 6px;
-  }
-
-  /* App Store badge — centered, prominent, finger-friendly */
-  .store-badges {
-    grid-area: badge;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-  }
-  .store-badge {
-    transform: scale(1.06);
-    transform-origin: center;
-  }
 
   /* Hide the orbiting floating cards — clutter on small viewport */
   .float-card { display: none !important; }
