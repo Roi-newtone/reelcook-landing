@@ -402,6 +402,11 @@ img.logo-mark {
   background: #FFFFFF;
   position: relative;
 }
+/* Screen container clips the media — no own radius on the video/img,
+   removes subpixel white-edge artifacts at corners. */
+.phone-screen-image {
+  background: #000;
+}
 .phone-screen-image .phone-img,
 .phone-screen-image .phone-video {
   width: 100%;
@@ -409,12 +414,10 @@ img.logo-mark {
   object-fit: cover;
   object-position: center center;
   display: block;
-  border-radius: 34px;
+  border-radius: 0;
+  vertical-align: top;
 }
 .phone-screen-image .phone-img { object-position: top center; }
-.phone-screen-image .phone-video { background: #000; }
-.phone-back .phone-screen-image .phone-video,
-.phone-back .phone-screen-image .phone-img { border-radius: 30px; }
 
 /* Animated incoming-card (sliding onto the back phone with the looping IG video) */
 .incoming-card {
@@ -435,39 +438,30 @@ img.logo-mark {
   z-index: 4;
   animation: slide-in-card 6s ease-in-out infinite;
 }
-.ic-thumb {
-  width: 34px; height: 34px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #FFCBA4, #FF6B00);
-  flex: 0 0 34px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
-}
 .ic-info { flex: 1; min-width: 0; }
 .ic-tag {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--brand);
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 .ic-title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--ink);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.2;
+  line-height: 1.25;
+  /* no white-space:nowrap / text-overflow:ellipsis — let it breathe and wrap naturally */
 }
 .ic-check {
-  width: 22px; height: 22px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 22px;
+  flex: 0 0 26px;
   box-shadow: 0 4px 12px rgba(255,107,0,0.30);
 }
 
@@ -1734,45 +1728,70 @@ img.logo-mark {
 }
 
 @media (max-width: 720px) {
-  .nav-links, .nav-cta { display: none; }
-  .mobile-toggle { display: inline-flex; }
-  .hero { padding: 50px 0 60px; }
-  .hero-content h1 { font-size: 38px; }
+  /* Hide the top nav bar entirely on mobile — campaigns land users here and
+     the nav was eating precious above-the-fold space. The logo + nav links
+     reappear at desktop breakpoint. */
+  .site-header { display: none !important; }
+
+  .hero { padding: 32px 0 60px; }
+  .hero-content h1 { font-size: 36px; line-height: 1.08; }
+
+  /* Hero visual: compact, centered frame */
   .hero-visual {
-    height: 440px;
+    height: 510px;
     width: 100%;
-    max-width: 380px;
-    margin: 24px auto 0;
+    max-width: 340px;
+    margin: 20px auto 0;
     position: relative;
   }
-  /* Smaller, tighter, centered phones that always fit the viewport */
-  .phone-front {
-    width: 195px; height: 405px;
-    left: 6%; top: 8px;
-    transform: rotate(5deg);
-    border-radius: 36px;
-  }
-  .phone-front .phone-screen { border-radius: 28px; }
+
+  /* SWAP ROLES on mobile: the video phone (was .phone-back, smaller/secondary)
+     becomes the PRIMARY one — bigger, in front, on the natural right side in RTL.
+     The image phone (.phone-front) shrinks and sits behind on the left as a
+     supporting accent. No HTML changes — just CSS scoped to mobile. */
   .phone-back {
-    width: 170px; height: 360px;
-    right: 4%; top: 56px;
-    transform: rotate(-8deg);
+    width: 245px; height: 515px;
+    inset-inline-start: 0;  /* visual right in RTL — eye lands here first */
+    right: auto;
+    left: auto;
+    top: 0;
+    transform: rotate(-5deg);
+    z-index: 3;
+    opacity: 1;
+    border-radius: 40px;
+  }
+  .phone-back .phone-screen { border-radius: 32px; }
+
+  .phone-front {
+    width: 165px; height: 350px;
+    inset-inline-end: 0;    /* visual left in RTL — secondary position */
+    left: auto;
+    right: auto;
+    top: 70px;
+    transform: rotate(8deg);
+    z-index: 1;
+    opacity: 0.88;
     border-radius: 34px;
   }
-  .phone-back .phone-screen { border-radius: 26px; }
-  /* Floating cards: shrink + hug the visual so they don't overflow */
-  .float-card {
-    min-width: 0;
-    max-width: 168px;
-    padding: 8px 11px;
-    transform: scale(0.92);
-    transform-origin: center;
+  .phone-front .phone-screen { border-radius: 26px; }
+
+  /* Hide the orbiting floating cards on mobile — they crowd the small viewport.
+     The .incoming-card pinned to the video phone is enough signal. */
+  .float-card { display: none !important; }
+
+  /* Popup: keep static and always visible on mobile (no slide-in animation).
+     Shorter text + no ellipsis = nothing gets cut off. */
+  .incoming-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    bottom: 24px;
+    inset-inline-start: 12px;
+    inset-inline-end: 12px;
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 14px;
   }
-  .float-card-1 { top: -8px; right: 0; }
-  .float-card-2 { top: 195px; left: 0; }
-  .float-card-4 { bottom: -8px; left: 18px; }
-  .fc-title { font-size: 12.5px; }
-  .fc-sub { font-size: 10.5px; }
   .how-it-works, .features-zigzag, .translate, .faq, .bottom-cta { padding: 70px 0; }
   .sp-strip { gap: 28px; }
   .sp-logo { font-size: 15px; }
