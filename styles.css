@@ -61,7 +61,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   margin: 0;
@@ -1739,95 +1739,127 @@ img.logo-mark {
      reappear at desktop breakpoint. */
   .site-header { display: none !important; }
 
-  .hero { padding: 14px 0 30px; }
-  .hero-content h1 { font-size: 34px; line-height: 1.08; }
-  .hero-content .lede { font-size: 16px; margin-bottom: 14px; }
-  .store-badges { margin-bottom: 14px; }
+  /* ========== MOBILE HERO — clean single column, centered ==========
+     Order (top → bottom): H1, Lede, Phone, Trust list, App Store badge.
+     All centered, comfortable gaps, NO side-by-side, NO horizontal scroll. */
 
-  /* Trust list — 2-row layout via natural flex-wrap.
-     max-width: ~66% leaves the visual left for the phone to sit alongside.
-     Row 1 fits items 1+2 (both short), row 2 fits item 3 (the long one). */
-  .hero-trust {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 8px 12px;
-    max-width: 66%;
-    margin-top: 14px;
+  .hero { padding: 24px 0 44px; }
+
+  /* Convert hero-grid into a single centered column with explicit area order.
+     display: contents on hero-content flattens its children into hero-grid
+     so they can be placed in named grid areas alongside hero-visual. */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "lede"
+      "phone"
+      "trust"
+      "badge";
+    gap: 22px;
+    justify-items: center;
+    text-align: center;
   }
-  .hero-trust li { font-size: 12.5px; gap: 6px; }
+  .hero-content { display: contents; }
+  .hero-content h1 {
+    grid-area: title;
+    font-size: clamp(28px, 8.5vw, 36px);
+    line-height: 1.1;
+    text-align: center;
+    margin: 0;
+    max-width: 92%;
+  }
+  .hero-content .lede {
+    grid-area: lede;
+    font-size: 16px;
+    line-height: 1.55;
+    text-align: center;
+    margin: 0;
+    max-width: 92%;
+  }
 
-  /* Hero visual: pulled UP with negative margin-top so it sits *alongside*
-     the badge + trust list (instead of underneath them). Pushed to the
-     visual LEFT via flex justify-content: flex-end (= inline end in RTL),
-     with a slight bleed past the container edge.
-     pointer-events: none on the empty space lets clicks pass through to
-     the text; the phone itself re-enables pointer events. */
+  /* Phone mockup — centered, fits screen width comfortably. */
   .hero-visual {
+    grid-area: phone;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: auto;
     max-width: 100%;
-    margin: -200px 0 0;
+    height: auto;
+    margin: 0;
     position: relative;
-    z-index: 0;
-    pointer-events: none;
+    pointer-events: auto;
   }
-
-  /* The image phone (recipes-grid screenshot) is removed on mobile — it was
-     fully covered by the video phone anyway, just wasting render. */
   .phone-front { display: none !important; }
-
-  /* The video phone, sole mockup on mobile.
-     Smaller (160×340) so it sits comfortably beside the text column.
-     -12px inline-end margin = slight bleed past the visual left edge
-     for that "outside the layout line" feel. */
   .phone-back {
     position: relative;
     top: auto; left: auto; right: auto;
     inset-inline-start: auto;
     inset-inline-end: auto;
-    width: 160px;
-    height: 340px;
-    transform: rotate(-4deg);
-    margin-inline-end: -12px;
+    width: min(230px, 64vw);
+    aspect-ratio: 9 / 19;
+    height: auto;
+    transform: rotate(-2deg);
+    margin: 0;
     z-index: 2;
     opacity: 1;
-    border-radius: 30px;
+    border-radius: 34px;
     pointer-events: auto;
   }
-  .phone-back .phone-screen { border-radius: 24px; }
+  .phone-back .phone-screen { border-radius: 26px; }
   .phone-back .phone-screen-image .phone-video,
-  .phone-back .phone-screen-image .phone-img { border-radius: 24px !important; }
-
-  /* Kill the desktop float-y animation on mobile — it would re-set the
-     transform and override our rotation. */
+  .phone-back .phone-screen-image .phone-img { border-radius: 26px !important; }
   .phone-back, .phone-front { animation: none !important; }
 
-  /* Incoming card: shrink for the smaller phone */
-  .incoming-card .ic-tag { font-size: 9px; }
-  .incoming-card .ic-title { font-size: 12px; }
-  .incoming-card .ic-check { width: 22px; height: 22px; flex: 0 0 22px; }
+  /* Trust list — centered row with natural wrap below the phone. */
+  .hero-trust {
+    grid-area: trust;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 18px;
+    max-width: 96%;
+    margin: 0;
+    padding: 0;
+  }
+  .hero-trust li {
+    font-size: 13.5px;
+    gap: 6px;
+  }
 
-  /* Hide the orbiting floating cards on mobile — they crowd the small viewport.
-     The .incoming-card pinned to the video phone is enough signal. */
+  /* App Store badge — centered, prominent, finger-friendly */
+  .store-badges {
+    grid-area: badge;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+  .store-badge {
+    transform: scale(1.06);
+    transform-origin: center;
+  }
+
+  /* Hide the orbiting floating cards — clutter on small viewport */
   .float-card { display: none !important; }
 
-  /* Popup: keep static and always visible on mobile (no slide-in animation).
-     Shorter text + no ellipsis = nothing gets cut off. */
+  /* Popup: smooth slide-in cycle (was disabled — bring it back).
+     Repeats forever with the existing slide-in-card keyframe. */
   .incoming-card {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    bottom: 24px;
-    inset-inline-start: 12px;
-    inset-inline-end: 12px;
-    padding: 10px 12px;
-    gap: 10px;
-    border-radius: 14px;
+    bottom: 22px;
+    inset-inline-start: 10px;
+    inset-inline-end: 10px;
+    padding: 9px 11px;
+    gap: 9px;
+    border-radius: 13px;
+    animation: slide-in-card 6s ease-in-out infinite;
   }
+  .incoming-card .ic-tag { font-size: 10px; }
+  .incoming-card .ic-title { font-size: 12.5px; }
+  .incoming-card .ic-check { width: 24px; height: 24px; flex: 0 0 24px; }
   .how-it-works, .features-zigzag, .translate, .faq, .bottom-cta { padding: 70px 0; }
   .sp-strip { gap: 28px; }
   .sp-logo { font-size: 15px; }
