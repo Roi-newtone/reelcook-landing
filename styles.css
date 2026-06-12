@@ -402,10 +402,13 @@ img.logo-mark {
   background: #FFFFFF;
   position: relative;
 }
-/* Screen container clips the media — no own radius on the video/img,
-   removes subpixel white-edge artifacts at corners. */
+/* Black background prevents white edge if the media doesn't perfectly fill.
+   Critical: give the media element its OWN border-radius (matching the parent
+   screen). Relying on parent overflow:hidden fails on iOS Safari when the
+   parent has a transform (rotation) — corners stay sharp. */
 .phone-screen-image {
   background: #000;
+  padding: 0;
 }
 .phone-screen-image .phone-img,
 .phone-screen-image .phone-video {
@@ -414,10 +417,13 @@ img.logo-mark {
   object-fit: cover;
   object-position: center center;
   display: block;
-  border-radius: 0;
   vertical-align: top;
 }
 .phone-screen-image .phone-img { object-position: top center; }
+.phone-front .phone-screen-image .phone-img,
+.phone-front .phone-screen-image .phone-video { border-radius: 34px; }
+.phone-back  .phone-screen-image .phone-img,
+.phone-back  .phone-screen-image .phone-video { border-radius: 32px; }
 
 /* Animated incoming-card (sliding onto the back phone with the looping IG video) */
 .incoming-card {
@@ -1733,47 +1739,49 @@ img.logo-mark {
      reappear at desktop breakpoint. */
   .site-header { display: none !important; }
 
-  .hero { padding: 32px 0 60px; }
+  .hero { padding: 20px 0 50px; }
   .hero-content h1 { font-size: 36px; line-height: 1.08; }
+  .hero-content .lede { font-size: 17px; margin-bottom: 22px; }
+  .store-badges { margin-bottom: 18px; }
 
-  /* Hero visual: compact, centered frame */
+  /* Tighter trust list on mobile — packs the 3 items so the phone rises up */
+  .hero-trust { gap: 8px 18px; }
+  .hero-trust li { font-size: 13px; gap: 6px; }
+
+  /* Hero visual: only ONE phone now (the looping IG video). Centered, slight
+     tilt, max prominence. */
   .hero-visual {
-    height: 510px;
+    height: 540px;
     width: 100%;
     max-width: 340px;
-    margin: 20px auto 0;
+    margin: 12px auto 0;     /* lifted closer to the trust tags */
     position: relative;
   }
 
-  /* SWAP ROLES on mobile: the video phone (was .phone-back, smaller/secondary)
-     becomes the PRIMARY one — bigger, in front, on the natural right side in RTL.
-     The image phone (.phone-front) shrinks and sits behind on the left as a
-     supporting accent. No HTML changes — just CSS scoped to mobile. */
+  /* The image phone (recipes-grid screenshot) is removed on mobile — it was
+     fully covered by the video phone anyway, just wasting render. */
+  .phone-front { display: none !important; }
+
+  /* The video phone is the SOLE hero mockup on mobile. Centered horizontally
+     (left:50% + translateX(-50%)) with a subtle rotation for visual life. */
   .phone-back {
-    width: 245px; height: 515px;
-    inset-inline-start: 0;  /* visual right in RTL — eye lands here first */
-    right: auto;
-    left: auto;
+    width: 260px;
+    height: 555px;
     top: 0;
-    transform: rotate(-5deg);
-    z-index: 3;
+    left: 50%;
+    right: auto;
+    inset-inline-start: auto;
+    inset-inline-end: auto;
+    transform: translateX(-50%) rotate(-3deg);
+    z-index: 2;
     opacity: 1;
     border-radius: 40px;
   }
   .phone-back .phone-screen { border-radius: 32px; }
 
-  .phone-front {
-    width: 165px; height: 350px;
-    inset-inline-end: 0;    /* visual left in RTL — secondary position */
-    left: auto;
-    right: auto;
-    top: 70px;
-    transform: rotate(8deg);
-    z-index: 1;
-    opacity: 0.88;
-    border-radius: 34px;
-  }
-  .phone-front .phone-screen { border-radius: 26px; }
+  /* Kill the desktop float-y animation on mobile — it sets its own transform
+     (rotate(-10deg) translateY) which would override our centered placement. */
+  .phone-back, .phone-front { animation: none !important; }
 
   /* Hide the orbiting floating cards on mobile — they crowd the small viewport.
      The .incoming-card pinned to the video phone is enough signal. */
