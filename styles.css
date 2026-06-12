@@ -1739,60 +1739,77 @@ img.logo-mark {
      reappear at desktop breakpoint. */
   .site-header { display: none !important; }
 
-  .hero { padding: 14px 0 50px; }
-  .hero-content h1 { font-size: 36px; line-height: 1.08; }
-  .hero-content .lede { font-size: 17px; margin-bottom: 16px; }
+  .hero { padding: 14px 0 30px; }
+  .hero-content h1 { font-size: 34px; line-height: 1.08; }
+  .hero-content .lede { font-size: 16px; margin-bottom: 14px; }
   .store-badges { margin-bottom: 14px; }
 
-  /* Trust list — stacked vertically, hugging the right (Hebrew start in RTL).
-     Compact rows keep total height in check. */
+  /* Trust list — 2-row layout via natural flex-wrap.
+     max-width: ~66% leaves the visual left for the phone to sit alongside.
+     Row 1 fits items 1+2 (both short), row 2 fits item 3 (the long one). */
   .hero-trust {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
-    gap: 8px;
+    gap: 8px 12px;
+    max-width: 66%;
+    margin-top: 14px;
   }
-  .hero-trust li { font-size: 14px; gap: 8px; }
+  .hero-trust li { font-size: 12.5px; gap: 6px; }
 
-  /* Hero visual: flex container — the phone is the SOLE flex item,
-     centered naturally with no absolute-positioning math (which was
-     leaving the phone hugging the left edge in some browsers). */
+  /* Hero visual: pulled UP with negative margin-top so it sits *alongside*
+     the badge + trust list (instead of underneath them). Pushed to the
+     visual LEFT via flex justify-content: flex-end (= inline end in RTL),
+     with a slight bleed past the container edge.
+     pointer-events: none on the empty space lets clicks pass through to
+     the text; the phone itself re-enables pointer events. */
   .hero-visual {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
     width: 100%;
     height: auto;
-    max-width: 340px;
-    margin: 8px auto 0;
+    max-width: 100%;
+    margin: -200px 0 0;
     position: relative;
+    z-index: 0;
+    pointer-events: none;
   }
 
   /* The image phone (recipes-grid screenshot) is removed on mobile — it was
      fully covered by the video phone anyway, just wasting render. */
   .phone-front { display: none !important; }
 
-  /* The video phone is the SOLE hero mockup on mobile.
-     position: relative (not absolute) so it participates in the flex flow
-     of .hero-visual and gets centered cleanly. */
+  /* The video phone, sole mockup on mobile.
+     Smaller (160×340) so it sits comfortably beside the text column.
+     -12px inline-end margin = slight bleed past the visual left edge
+     for that "outside the layout line" feel. */
   .phone-back {
     position: relative;
-    width: 260px;
-    height: 555px;
-    top: auto;
-    left: auto;
-    right: auto;
+    top: auto; left: auto; right: auto;
     inset-inline-start: auto;
     inset-inline-end: auto;
-    transform: rotate(-3deg);
+    width: 160px;
+    height: 340px;
+    transform: rotate(-4deg);
+    margin-inline-end: -12px;
     z-index: 2;
     opacity: 1;
-    border-radius: 40px;
+    border-radius: 30px;
+    pointer-events: auto;
   }
-  .phone-back .phone-screen { border-radius: 32px; }
+  .phone-back .phone-screen { border-radius: 24px; }
+  .phone-back .phone-screen-image .phone-video,
+  .phone-back .phone-screen-image .phone-img { border-radius: 24px !important; }
 
   /* Kill the desktop float-y animation on mobile — it would re-set the
      transform and override our rotation. */
   .phone-back, .phone-front { animation: none !important; }
+
+  /* Incoming card: shrink for the smaller phone */
+  .incoming-card .ic-tag { font-size: 9px; }
+  .incoming-card .ic-title { font-size: 12px; }
+  .incoming-card .ic-check { width: 22px; height: 22px; flex: 0 0 22px; }
 
   /* Hide the orbiting floating cards on mobile — they crowd the small viewport.
      The .incoming-card pinned to the video phone is enough signal. */
