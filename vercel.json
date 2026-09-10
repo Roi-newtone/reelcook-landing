@@ -4,20 +4,59 @@
     {
       "source": "/assets/videos/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/assets/posters/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=2592000" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/r/:id",
+      "destination": "https://api-production-90b0.up.railway.app/r/:id"
+    },
+    {
+      "source": "/c/:handle",
+      "destination": "https://api-production-90b0.up.railway.app/c/:handle"
+    },
+    {
+      "source": "/f/:token",
+      "destination": "https://api-production-90b0.up.railway.app/f/:token"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://api-production-90b0.up.railway.app/sitemap.xml"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "https://api-production-90b0.up.railway.app/robots.txt"
+    },
+    {
+      "source": "/.well-known/apple-app-site-association",
+      "destination": "https://api-production-90b0.up.railway.app/.well-known/apple-app-site-association"
+    },
+    {
+      "source": "/.well-known/assetlinks.json",
+      "destination": "https://api-production-90b0.up.railway.app/.well-known/assetlinks.json"
     }
   ]
 }
