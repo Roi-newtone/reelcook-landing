@@ -57,6 +57,22 @@
     {
       "source": "/.well-known/assetlinks.json",
       "destination": "https://api-production-90b0.up.railway.app/.well-known/assetlinks.json"
+    },
+    {
+      "source": "/m",
+      "destination": "https://api-production-90b0.up.railway.app/m"
+    },
+    {
+      "source": "/m/:slug",
+      "destination": "https://api-production-90b0.up.railway.app/m/:slug"
+    },
+    {
+      "source": "/llms.txt",
+      "destination": "https://api-production-90b0.up.railway.app/llms.txt"
+    },
+    {
+      "source": "/7c3e9a41d25b48f6a0e1b93c56d8f214.txt",
+      "destination": "https://api-production-90b0.up.railway.app/7c3e9a41d25b48f6a0e1b93c56d8f214.txt"
     }
   ]
 }
