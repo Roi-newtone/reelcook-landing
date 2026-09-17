@@ -15,6 +15,77 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Link previews (WhatsApp, iMessage, Facebook, X). Without these a shared
+       link shows a bare URL, which is how most people meet the site. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ReelCook" />
+  <meta property="og:locale" content="he_IL" />
+  <meta property="og:url" content="https://www.reelcook.io/" />
+  <meta property="og:title" content="ReelCook — שמירת מתכונים מהאינסטגרם וספר מתכונים בעברית" />
+  <meta property="og:description" content="שומרים ריל, מקבלים מתכון מסודר בעברית: מצרכים, שלבי הכנה, סיווג כשרות ורשימת קניות." />
+  <meta property="og:image" content="https://www.reelcook.io/assets/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="ReelCook — שמירת מתכונים מהאינסטגרם" />
+  <meta name="twitter:description" content="שומרים ריל, מקבלים מתכון מסודר בעברית: מצרכים, שלבי הכנה, סיווג כשרות ורשימת קניות." />
+  <meta name="twitter:image" content="https://www.reelcook.io/assets/logo.png" />
+
+  <!-- Who ReelCook is, for search engines and AI assistants. `alternateName`
+       carries the Hebrew spelling people actually type ("רילקוק"), and
+       `sameAs` ties the site to the two store listings, which currently
+       outrank it for the brand name. No rating is declared: we have none. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.reelcook.io/#organization",
+        "name": "ReelCook",
+        "alternateName": ["רילקוק", "ריל קוק"],
+        "url": "https://www.reelcook.io/",
+        "logo": "https://www.reelcook.io/assets/logo.png",
+        "email": "support@reelcook.io",
+        "areaServed": "IL",
+        "sameAs": [
+          "https://apps.apple.com/app/id6762307490",
+          "https://play.google.com/store/apps/details?id=com.reelcook.app"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.reelcook.io/#website",
+        "name": "ReelCook",
+        "alternateName": "רילקוק",
+        "url": "https://www.reelcook.io/",
+        "inLanguage": "he-IL",
+        "publisher": { "@id": "https://www.reelcook.io/#organization" }
+      },
+      {
+        "@type": "MobileApplication",
+        "name": "ReelCook",
+        "alternateName": "רילקוק",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "iOS",
+        "url": "https://apps.apple.com/app/id6762307490",
+        "inLanguage": ["he", "en", "ar"],
+        "publisher": { "@id": "https://www.reelcook.io/#organization" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ILS" }
+      },
+      {
+        "@type": "MobileApplication",
+        "name": "ReelCook",
+        "alternateName": "רילקוק",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Android",
+        "url": "https://play.google.com/store/apps/details?id=com.reelcook.app",
+        "inLanguage": ["he", "en", "ar"],
+        "publisher": { "@id": "https://www.reelcook.io/#organization" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ILS" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
