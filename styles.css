@@ -256,8 +256,12 @@ p { margin: 0; color: var(--ink-2); }
 img.logo-mark {
   width: 52px;
   height: 52px;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  /* The v7 icon is a full-bleed square: round its corners in CSS
+     (22.3%, i.e. 228 of 1024). Square box + cover = no distortion.
+     Default smooth scaling keeps the downscaled pan outline free of jaggies. */
+  flex-shrink: 0;
+  border-radius: 22.3%;
+  object-fit: cover;
 }
 .logo-dark img.logo-mark { width: 42px; height: 42px; }
 .logo .logo-text { font-size: 24px; font-weight: 800; letter-spacing: -0.01em; }
