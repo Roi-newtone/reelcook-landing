@@ -67,6 +67,10 @@
       "destination": "https://api-production-90b0.up.railway.app/m/:slug"
     },
     {
+      "source": "/g/:slug",
+      "destination": "https://api-production-90b0.up.railway.app/g/:slug"
+    },
+    {
       "source": "/llms.txt",
       "destination": "https://api-production-90b0.up.railway.app/llms.txt"
     },
