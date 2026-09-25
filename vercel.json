@@ -43,6 +43,14 @@
       "destination": "https://api-production-90b0.up.railway.app/f/:token"
     },
     {
+      "source": "/k/:handle/:token",
+      "destination": "https://api-production-90b0.up.railway.app/k/:handle/:token"
+    },
+    {
+      "source": "/k/:handle/:token/ask",
+      "destination": "https://api-production-90b0.up.railway.app/k/:handle/:token/ask"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "https://api-production-90b0.up.railway.app/sitemap.xml"
     },
